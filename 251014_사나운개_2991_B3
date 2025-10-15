@@ -1,0 +1,31 @@
+A, B, C, D = map(int, input().split())
+P, M, N = map(int, input().split())
+
+arr = [0] * 1100
+
+iter = 0
+
+while True:
+    if iter >= 999:
+        break
+    for i in range(0,A,1):
+        arr[iter] += 1
+        iter += 1
+    for i in range(0,B,1):
+        iter += 1
+
+iter =0
+while True:
+    if iter >= 999:
+        break
+    for i in range(0,C,1):
+        arr[iter] += 1
+        iter += 1
+    for i in range(0,D,1):
+        iter += 1
+
+
+        
+print(arr[P-1])
+print(arr[M-1])
+print(arr[N-1])
