@@ -1,0 +1,21 @@
+#사분별로 특정 수만큼 더 크다는 패턴을 파악
+
+
+def Z(N,r,c):
+    if(N==0):
+        return 0
+    half = 2**(N-1)
+    
+    if(r< half and c<half):
+        return Z(N-1,r,c)
+    elif(r<half and c>=half):
+        return half*half+ Z(N-1,r,c-half)
+    elif(r>=half and c<half):
+        return 2*half*half + Z(N-1,r-half,c)
+    else:
+        return 3*half*half + Z(N-1,r-half,c-half)
+
+
+N,r,c = map(int,input().split())
+
+print(Z(N,r,c))
