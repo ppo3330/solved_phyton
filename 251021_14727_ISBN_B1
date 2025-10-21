@@ -1,0 +1,24 @@
+#O(1)
+#isdigit 정도 기억하기
+ISBN = str(input())
+result =0
+num =0
+for i in range(13):
+    if(ISBN[i].isdigit() != True):
+       num =i+1
+    if(i%2 == 0):
+        if(ISBN[i].isdigit()):
+            result += int(ISBN[i])
+    elif(i%2 != 0):
+        if(ISBN[i].isdigit()):
+            result += int(ISBN[i])*3
+             
+for i in range(10):
+    if(num%2 == 0):
+        if((result+i*3)%10 == 0 ):
+            print(i)
+    else:
+        if((result+i)%10 == 0):
+            print(i)
+            
+            
