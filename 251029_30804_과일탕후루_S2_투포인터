@@ -1,0 +1,29 @@
+#시간복잡도: O(N)
+#투포인터 기억하기. 조건만족시 right증가 불만족시 left증가하여 계산
+N = int(input())
+arr = list(map(int,input().split()))
+
+count = {}
+fruitType = 0
+left = 0
+result =0
+
+for right in range(N):
+    if arr[right] in count:
+        count[arr[right]] +=1
+    else:
+        count[arr[right]] = 1
+        fruitType +=1
+        
+    while fruitType > 2:
+        count[arr[left]]-=1
+        if count[arr[left]] == 0:
+            del count[arr[left]]
+            fruitType-=1
+        left+=1
+        
+    result = max(result,right-left+1)
+    
+print(result)
+        
+
