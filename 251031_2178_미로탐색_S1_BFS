@@ -1,0 +1,33 @@
+#O(N*M)
+#파이썬으로 BFS구현 deque이용 해서 popleft, pop으로 하면 popright가 돼서 dfs가 되어 최단거리에 맞지 않음.
+#이차원 배열 선언 방법
+#입력받을때 공백없는 수들의 연결
+
+from collections import deque
+N, M  = map(int,input().split())
+
+arr = []
+
+for i in range(N):
+    line = list(map(int, list(input().strip())))
+    arr.append(line)
+    
+visit = [[654321 for _ in range(M)] for _ in range(N)]
+
+q = deque()
+q.append((0,0))
+visit[0][0] = 1
+
+while len(q) != 0:
+    curn,curm = q.popleft()
+    dirn = [0,0,1,-1]
+    dirm = [1,-1,0,0]
+    for i in range(4):
+        forn = dirn[i]+curn
+        form = dirm[i]+curm
+        if forn < N and forn>=0 and form<M and form>=0:
+            if(arr[forn][form] != 0 and visit[curn][curm]+1 < visit[forn][form] ):
+                visit[forn][form] = visit[curn][curm]+1
+                q.append((forn,form))
+                
+print(visit[N-1][M-1]) 
