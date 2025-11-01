@@ -1,0 +1,51 @@
+#O((NlogN은 무시해도 될 정도)+ M * P(N,M))
+#N개의 숫자를 arr안에 넣어서 sort 후 계산.
+#백트래킹 이제 조금 알 것 같을지도..?
+
+N,M = map(int,input().split())
+
+arr = list(map(int,input().split()))
+arr.sort()
+
+cur = []
+
+def dfs(num):
+    if len(cur) == M:
+        for i in range(M):
+            print(cur[i],end = ' ')
+        print()
+        return
+    
+    for i in range(N):
+        if arr[i] not in cur:
+            cur.append(arr[i])
+            dfs(i)
+            cur.pop()
+
+dfs(0)
+
+#if arr[i] not in cur에서 시간 복잡도가 O(M)추가 되는것을 방지한 최적화 코드 -> O(P(N,M))
+# N,M = map(int,input().split())
+
+# arr = list(map(int,input().split()))
+# arr.sort()
+
+# cur = []
+# visit = [False] * N
+
+# def dfs():
+#     if len(cur) == M:
+#         for i in range(M):
+#             print(cur[i],end = ' ')
+#         print()
+#         return
+    
+#     for i in range(N):
+#         if visit[i] == False:
+#             visit[i] = True
+#             cur.append(arr[i])
+#             dfs()
+#             cur.pop()
+#             visit[i] = False
+
+# dfs()
