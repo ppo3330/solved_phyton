@@ -1,0 +1,44 @@
+#O(N^3)
+N = int(input())
+
+arr = []
+
+for i in range(N):
+    line = []
+    line = list(map(int,input().split()))
+    arr.append(line)
+    
+def graph(i):
+    for j in range(N):
+        if arr[i][j] == 1 and visit[j] == False:
+            count[j] = 1
+            visit[j] = True
+            graph(j)
+            
+for i in range(N):
+    visit = [False]*N
+    count = [0]*N
+    graph(i)
+    for j in range(N):
+        if count[j] == 1:
+            arr[i][j] = 1
+            
+for i in range(N):
+    for j in range(N):
+        print(arr[i][j],end = ' ')
+    print()
+
+#단순화. 플로이드 워셜
+# N = int(input())
+# graph = [list(map(int, input().split())) for _ in range(N):
+# for i in range(N):
+#     for j in range(N):
+#         for k in range(N):
+#             if graph[j][i] and graph[i][k]:
+#                 graph[j][k] = 1             
+# for g in graph:
+#     print(*g)
+
+
+
+            
