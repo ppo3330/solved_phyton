@@ -1,0 +1,45 @@
+#O(B)
+#BFS, 파이썬에서 class 사용하는법 기억.(cpp에서의 typedef)
+
+A,B = map(int,input().split())
+
+def doub(n):
+    return n*2
+def plusOne(n):
+    return n*10+1
+
+class nn:
+    a=0
+    b=0
+    
+    
+
+q = []
+nums = nn()
+nums.a = A
+nums.b = 1
+q.append(nums)
+result = B+1
+while len(q) != 0:
+    nums = q.pop()
+    cur1 = nums.a
+    cur2 = nums.b
+    dc = doub(cur1)
+    pc = plusOne(cur1)
+    if cur1 == B:
+        result = min(result,cur2)
+    if pc < B+1:
+        nums1 = nn()
+        nums1.a = pc
+        nums1.b = cur2+1
+        q.append(nums1)
+    if dc < B+1:
+        nums2 = nn()
+        nums2.a = dc
+        nums2.b = cur2+1
+        q.append(nums2)
+    
+if result == B+1:
+    print(-1)
+else:
+    print(result)
