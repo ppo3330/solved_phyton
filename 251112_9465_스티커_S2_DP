@@ -1,5 +1,5 @@
-//O(T*n)
-//DP
+#O(T*n)
+#DP
 T = int(input())
 result = []
 for _ in range(T):
