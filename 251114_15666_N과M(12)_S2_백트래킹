@@ -1,0 +1,22 @@
+#O(M * (N+M+1)/M)
+N, M = map(int,input().split())
+
+arr1 = list(map(int,input().split()))
+arr1.sort()
+arr2 = []
+for i in range(N):
+    if arr1[i] in arr2: continue
+    else: arr2.append(arr1[i])
+    
+seq = []
+
+def dfs(n):
+    if len(seq) == M:
+        print(*seq)
+        return
+    
+    for i in range(n,len(arr2),1):
+        seq.append(arr2[i])
+        dfs(i)
+        seq.pop();
+dfs(0)
