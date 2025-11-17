@@ -1,0 +1,35 @@
+#O(N!)
+#솔직히 어렵네... 대각선을 구할때 기울기로 구했음. 이해하는데 오래걸렸네 ㅠ
+#pypy3로 해야 시간초과 안나오고 성공
+#row[num] = col 인 형식을 이용해서 1차원배열로 이전 퀸의 위치를 저장
+#저장된 위치를 기준으로 대각선과 열을 확인해서 퀸을 둘수 있는지 확인하고 가능 하면 두고 아니면 넘어감.
+#
+
+import sys
+N = int(input())
+
+visited = [False]*(N+1)
+result = 0
+
+def check(now_row):
+    for row in range(now_row):
+        if(visited[row] == visited[now_row] or abs(visited[now_row] - visited[row]) == abs(now_row- row)):
+            return False
+    return True
+    
+
+def queen(row):
+    global result
+       
+    if row == N: 
+        result +=1
+        
+    for col in range(N):
+        visited[row] = col
+        if check(row):
+            queen(row+1)
+            
+        
+        
+queen(0)
+print(result)
