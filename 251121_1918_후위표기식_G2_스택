@@ -1,0 +1,36 @@
+#O(n)
+#후위표기식의 알고리즘에 대해 알아야함
+# alpha -> print
+# '(' -> 추가
+# '*' || '/' -> 비어있지 않고 다음이 '*' 나 '/' 까지 pop , 추가
+# '+' || '-' -> 비어있지 않고 다음 '(' 까지 pop, 추가
+# ')' -> 비어있지 않고 '(' 까지 pop, '(' 제거
+# 남은 stack -> pop 해서 print
+
+formul = input()
+
+stack = []
+for cur in formul:
+    if cur.isalpha():
+        print(cur,end = '')
+    else:
+        if cur == '(':
+            stack.append(cur)
+        elif cur == '/' or cur == '*':
+            while stack and (stack[-1] == '*' or stack[-1] == '/'):
+                print(stack.pop(), end = '')
+            stack.append(cur)
+        elif cur == '+' or cur == '-':
+            while stack and stack[-1] != '(':
+                print(stack.pop(), end = '')
+            stack.append(cur)
+        elif cur == ')':
+            while stack and stack[-1] != '(':
+                print(stack.pop(), end = '')
+            stack.pop()
+        
+
+while stack:
+    print(stack.pop(), end = '')
+print()
+            
