@@ -1,0 +1,22 @@
+#O(N*N)
+N = int(input())
+
+arr = [list(map(int,input().split())) for _ in range(N)]
+dp = [[[0]*N for _ in range(N)] for _ in range(3)]
+
+for i in range(N):
+    for j in range(1,N):
+        if i==0 and j==1: 
+            dp[0][0][1] = 1
+            continue
+        if i>= N or j>= N: continue
+        if arr[i][j] == 1: continue;
+        if j > 0:
+            dp[0][i][j] = dp[0][i][j-1] + dp[2][i][j-1]
+        if i > 0:
+            dp[1][i][j] = dp[1][i-1][j] + dp[2][i-1][j]
+        if(arr[i-1][j] == 0 and arr[i][j-1] == 0 and i >0 and j >0):
+            dp[2][i][j] = dp[0][i-1][j-1] + dp[1][i-1][j-1] + dp[2][i-1][j-1]
+
+
+print(dp[0][N-1][N-1]+dp[1][N-1][N-1]+dp[2][N-1][N-1])
