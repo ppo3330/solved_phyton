@@ -1,0 +1,64 @@
+#O(M^2 * N * K)
+#K: 파티 참여자수. 최대 N임
+#합집합union으로 풀기도 한다고는 하는데 시간복잡도가 괜찮아 보이길래 구현했음
+#유니온은 밑에
+
+N,M  = map(int,input().split())
+knowlist = list(map(int,input().split())) 
+del knowlist[0]
+
+parties = []
+result = 0
+
+for _ in range(M):
+    party = list(map(int,input().split())) 
+    del party[0]
+    parties.append(party)
+
+for _ in range(M):
+    for i in range(M):
+        chk = False
+        for j in range(len(knowlist)):
+            if knowlist[j] in parties[i]:
+                chk = True
+                continue
+        if chk == True:
+            for j in range(len(parties[i])):
+                if parties[i][j] not in knowlist:
+                    knowlist.append(parties[i][j])
+                    
+for j in range(M):
+    result+=1
+    for i in range(len(knowlist)):
+        if knowlist[i] in parties[j]:
+            result-=1
+            break
+
+print(result)
+
+
+
+#유니온 코드
+#O(M^2 * K)
+#set의 in이 더 빠르다고함O(1)
+'''
+n, m = map(int, input().split())
+knowList = set(input().split()[1:])
+parties = []
+
+for _ in range(m):
+    parties.append(set(input().split()[1:]))
+
+for _ in range(m):
+    for party in parties:
+        if party & knowList:
+            knowList = knowList.union(party)
+
+cnt = 0
+for party in parties:
+    if party & knowList:
+        continue
+    cnt += 1
+
+print(cnt)
+'''
