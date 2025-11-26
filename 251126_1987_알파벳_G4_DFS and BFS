@@ -1,0 +1,59 @@
+#O(R*C)
+#DFS를 사용하여 푼것이나 시간초과로 비트마스킹으로 바꿈
+#비트 마스킹 기억해보기. 
+
+#BFS를 사용하여 푼 것, 함수에 인자로 alpha를 넣어서 해결한것
+
+R,C = map(int,input().split())
+arr = [input() for _ in range(R)]
+
+dirr = [0,0,1,-1]
+dirc = [1,-1,0,0]
+
+result = 0
+
+def dfs(r,c,mask,cnt):
+    global result
+    result = max(cnt,result)
+    for i in range(4):
+        forr = dirr[i] + r
+        forc = dirc[i] + c
+        if forr <0 or forr>=R or forc<0 or forc>=C: continue
+        
+        forbit = 1 << (ord(arr[forr][forc]) - 65)
+        if mask & forbit: continue
+        
+        dfs(forr,forc,mask | forbit,cnt+1)
+
+        
+start_mask = 1<< (ord(arr[0][0]) - 65)
+dfs(0,0,start_mask,1)
+print(result)
+
+
+#BFS
+'''
+from collections import deque
+R,C = map(int,input().split())
+arr = [input() for _ in range(R)]
+
+dirr = [0,0,1,-1]
+dirc = [1,-1,0,0]
+
+
+def bfs(r,c):
+    result = 1
+    q = set([(r,c,arr[r][c])])
+    while q:
+        r,c,alpha = q.pop()
+        result = max(result,len(alpha))
+        for i in range(4):
+            forr = dirr[i] + r
+            forc = dirc[i] + c
+            if forr <0 or forr>=R or forc<0 or forc>=C: continue
+            if arr[forr][forc] in alpha: continue
+            q.add((forr,forc,alpha+arr[forr][forc]))
+    return result
+
+print(bfs(0,0))
+'''
