@@ -1,0 +1,20 @@
+#O(N^2)
+#처음 생각했던 방식이 이런 느낌과 비슷했음. 시간이 훨 빨라짐
+#처음 모양을 변형시키는 방식 기억해보기.
+N = int(input())
+
+curStar = [
+    "  *   ",
+    " * *  ",
+    "***** "]
+curLen = 3
+
+while curLen < N:
+    for i in range(curLen):
+        curStar.append(curStar[i]*2)
+        curStar[i] = " "*curLen + curStar[i] + " "*curLen
+    curLen *=2
+    
+for i in curStar:
+    print("".join(i))
+
