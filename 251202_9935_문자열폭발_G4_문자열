@@ -1,0 +1,16 @@
+#O(N)
+#문자열로 했더니 시간초과 리스트로 해결
+#"구분자".join 은 리스트 내용을 구분자를 넣으면서 연결해서 문자열로 바꿈
+
+st = input()
+boom = input()
+result = []
+blen = len(boom)
+
+for i in st:
+    result.append(i)
+    if len(result) >= blen and ''.join(result[-blen:]) == boom:
+        del result[-blen:]
+            
+result = ''.join(result)
+print(result if result else "FRULA")
