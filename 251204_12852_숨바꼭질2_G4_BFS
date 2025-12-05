@@ -1,0 +1,32 @@
+#cpp복습
+#O(length)
+length = 100001
+N,K = map(int,input().split())
+
+dpdist=[1e9]*length
+dpnum=[0]*length
+
+q= []
+q.append(N)
+dpdist[N] = 0
+dpnum[N] = 1
+
+
+
+while q:
+   
+    cur = q.pop(0)
+    NEXT = [cur-1,cur+1,cur*2]
+    for nxt in NEXT:
+        if nxt <0 or nxt >=length: continue
+        
+        if dpdist[nxt] > dpdist[cur]+1:
+            dpdist[nxt] = dpdist[cur]+1
+            dpnum[nxt] = dpnum[cur]
+            q.append(nxt)
+        elif dpdist[nxt] == dpdist[cur]+1:
+            dpnum[nxt] += dpnum[cur]
+        
+print(dpdist[K])
+print(dpnum[K])
+
