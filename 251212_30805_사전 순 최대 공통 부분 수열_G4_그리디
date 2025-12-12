@@ -1,0 +1,34 @@
+#O(MN)
+N = int(input())
+serA = list(map(int,input().split()))
+M = int(input())
+serB = list(map(int,input().split()))
+
+serC = []
+sti= 0
+stj = 0
+def findmax():
+    global sti
+    global stj
+    MX = -1
+    MXidxi = -1
+    MXidxj = -1
+    for i in range(sti,N):
+        for j in range(stj,M):
+            if serA[i] == serB[j] and serA[i] > MX:
+                MX = serA[i]
+                MXidxi = i
+                MXidxj = j
+    sti = MXidxi+1
+    stj = MXidxj+1
+    return MX            
+    
+
+while True:
+    MX = findmax()
+    if MX == -1:
+        break
+    serC.append(MX)
+    
+print(len(serC))
+if len(serC) != 0: print(*serC)
