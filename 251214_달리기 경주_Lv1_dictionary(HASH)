@@ -1,0 +1,26 @@
+#O(callings)
+#dictionary는 O(1)로 search가능
+#hash사용 기억하기
+def solution(players, callings):
+    answer = []
+    dic1 = {}
+    dic2 = {}
+    cnt = 1 
+    for player in players:
+        dic1[player] = cnt
+        dic2[cnt] = player
+        cnt+=1
+        
+    for i in callings:
+        num = dic1[i]
+        player2 = dic2[num-1]
+        
+        dic2[num] = player2
+        dic2[num-1] = i
+        dic1[player2] +=1
+        dic1[i] -=1
+    
+    for i in range(1,len(players)+1):
+        answer.append(dic2[i])
+    
+    return answer
