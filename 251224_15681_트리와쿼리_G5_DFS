@@ -1,0 +1,27 @@
+#O(N+Q)
+import sys
+sys.setrecursionlimit(1000000)
+input = sys.stdin.readline
+
+N,R,Q = map(int,input().split())
+linked = [[] for _ in range(N+1)]
+for i in range(N-1):
+    a,b = map(int,input().split())
+    linked[a].append(b)
+    linked[b].append(a)
+
+nodeNums = [-1]*(N+1)
+
+def dfs(rt):
+    nodeNums[rt] = 1
+    for i in linked[rt]:
+        if nodeNums[i] == -1:
+            dfs(i)
+            nodeNums[rt] += nodeNums[i]
+
+            
+dfs(R)
+
+for i in range(Q):
+    q = int(input())
+    print(nodeNums[q])
