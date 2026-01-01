@@ -1,0 +1,38 @@
+#O(V*E)
+#간선을 최소 비용 순으로 정렬
+#간선을 순서대로 비교( 부모가 같으면 순환-> X)
+#순환이 발생하지 않으면 추가(union)
+#반복
+
+V,E = map(int,input().split())
+edges = []
+
+for _ in range(E):
+    A,B,C = map(int,input().split())
+    edges.append((C,A,B))
+    
+edges.sort()
+parent = [i for i in range(V+1)]
+result = 0
+
+def find_parent(x):
+    while parent[x] != x:
+        x = parent[x]
+    return parent[x]
+    
+def union_parent(a,b):
+    a = find_parent(a)
+    b = find_parent(b)
+    if a<b:
+        parent[b] = a
+    else:
+        parent[a] = b
+        
+for w,a,b in edges:
+    if find_parent(a) != find_parent(b):
+        union_parent(a,b)
+        result += w
+        
+print(result)
+        
+print(result)
