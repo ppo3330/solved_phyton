@@ -1,0 +1,21 @@
+#첨에 투포인터 생각은 했는데 안되는줄알고 다르게 풀었는데 이게 훨 편하네 ㅠ
+#그리고 이게 투포인터의 정석이었네...
+
+N, S = map(int,input().split())
+arr = list(map(int,input().split()))
+st = 0
+ed = 0
+sums = arr[0]
+ans = 1e9
+
+while st <= ed and ed < N:
+    if sums < S:
+        ed +=1
+        if ed == N: continue
+        sums += arr[ed]
+    else:
+        ans = min(ans,ed-st+1)
+        sums -= arr[st]
+        st+=1
+
+print(0 if ans == 1e9 else ans)
