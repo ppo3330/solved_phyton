@@ -1,0 +1,35 @@
+#O(N logN)
+#부분합 구할 때 ed - mid를 하게 되면 mid값까지 제외되는 것임. 주의! dp를 하나 크게 만들어서 dp[0] = 0으로 두고 나머지를 완성해버리기
+#이분탐색 시 left <= right, if 성공조건 -> left = mid +1, ans = mid, else right = mid -1 기억하기
+#방법은 고민 좀 해서 알게 됐으나 이분탐색과 누적합 구하는 부분에서 오류 해결에 어려움을 겪었음.
+
+def binary_search(left,right):
+    ed = right
+    ans = -1
+
+    while left <= right :
+        mid = (left + right) //2
+        if dp[ed+1] - dp[mid] >=  S:
+            ans = mid
+            left = mid +1
+        else:
+            right = mid -1
+    
+    if ans  == -1:
+        return 1e10
+    return ed - ans +1
+
+
+
+N, S = map(int,input().split())
+arr = list(map(int,input().split()))
+dp = [0]*(N+1)
+
+for i in range(N):
+    dp[i+1] = dp[i] + arr[i]
+    
+result = 1e10
+for i in range(N):
+    result = min(binary_search(0,i),result)
+
+print(0 if result == 1e10 else result)
