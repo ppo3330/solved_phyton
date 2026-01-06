@@ -1,0 +1,40 @@
+#O(N^2)
+#펠린드롬을 볼때 dp를 이용하여서 혼자일때는 펠린드롬 두개까지도 옆이랑 같으면 펠린드롬
+#3개 이상은 양쪽 끝이 같고 가운데가 펠린드롬이면 펠린드롬임을 이용
+#외에는 입출력이 커서 시간초과가 났음
+#import sys
+#input = sys.stdin.readline
+#print("\n".join(out)) 이용하여 해결
+
+#out 딕셔너리 없이
+#write = sys.stdout.write
+#write(write(str(dp[s-1][e-1]) + "\n") 도 가능
+
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+seq = list(map(int,input().split()))
+
+dp = [[0]*(N) for _ in range(N)]
+
+for i in range(N):
+    dp[i][i] = 1
+for i in range(N-1):
+    if seq[i] == seq[i+1]:
+        dp[i][i+1] = 1
+        
+for n in range(3,N+1):
+    for st in range(N-n+1):
+        ed = st + n -1
+        if (seq[st] == seq[ed] and dp[st+1][ed-1] == 1):
+            dp[st][ed] = 1
+
+
+M = int(input())
+out = []
+for _ in range(M):
+    s, e = map(int, input().split())
+    out.append(str(dp[s-1][e-1]))
+
+print("\n".join(out))
