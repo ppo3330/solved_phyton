@@ -1,0 +1,27 @@
+#O(n*m)
+#실제로는 더 작음
+import sys
+input = sys.stdin.readline
+
+n,m = map(int,input().split())
+parent = [i for i in range(n)]
+
+def find_parent(x):
+    while parent[x] != x:
+        x = parent[x]
+    return x
+result = 0
+for cnt in range(m):
+    a,b = map(int,input().split())
+    a = find_parent(a)
+    b = find_parent(b)
+    if a != b:
+        if a<b:
+            parent[b] = a
+        else:
+            parent[a] = b
+    else:
+        result = cnt+1
+        break
+    
+print(result)
