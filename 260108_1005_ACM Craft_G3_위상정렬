@@ -1,0 +1,41 @@
+#O(T*( N + D + K))
+#알고리즘은 몰랐지만 비슷하게 풀어보려고 했음. 들어오는 차수의 개수를 신경쓰지 않아서 앞에게 하나만 되도 작동하게 만들어서 잘못됐었음
+
+#위상정렬이라는 알고리즘!
+#사이클이 없는 방향 그래프의 모든 노드를 '방향성에 거스르지 않도록 순서대로 나열하는 것
+#순서가 있는 작업을 수행할때
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+def main():
+    T = int(input())
+    for _ in range(T):
+        N, K = map(int,input().split())
+        D = list(map(int,input().split()))
+        nxts = [[] for _ in range(N)] #graphs
+        nums = [0]*N #indegree 들어오는 차수의 개수
+        for _ in range(K):
+            x,y= map(int,input().split())
+            nxts[x-1].append(y-1)
+            nums[y-1] +=1
+        w = int(input())
+        
+        results = [i for i in D] #D[:]
+        dq = deque()
+        for i in range(N):
+            if nums[i] == 0:
+                dq.append(i)
+        while dq:
+            cur = dq.popleft()
+            for i in nxts[cur]:
+                results[i] = max(D[i] + results[cur], results[i])
+                nums[i]-=1
+                if nums[i] == 0:
+                    dq.append(i)
+                
+        print(results[w-1])
+       
+if __name__ == "__main__":
+    main()
