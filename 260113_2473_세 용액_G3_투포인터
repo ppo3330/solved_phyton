@@ -1,0 +1,37 @@
+#O(N^2)
+#itertools.combinations(arr,3)로 풀어보려고 했으나 이는 부르트포스로 N^3 시간초과
+#투포인터를 생각은 했었으나 구현 방법을 몰랐음.
+#left는 루프로 돌면서 md와 right값을 양 긑에 둔 상태에서 합에 따라 옮기는 투포인터 사용.
+
+import itertools
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+
+arr = list(map(int,input().split()))
+arr.sort()
+
+
+
+mn = float('inf')
+mnarr = []
+
+for left in range(N-2):
+    mid = left +1
+    right = N-1
+    while mid < right:
+        s = arr[left] + arr[mid] + arr[right]
+        if abs(s) < abs(mn):
+            mn = s
+            mnarr = [arr[left] , arr[mid] , arr[right]]
+        if s == 0:
+            print(*mnarr)
+            sys.exit(0)
+        elif s < 0:
+            mid +=1
+        else:
+            right -=1
+
+        
+print(*mnarr)
