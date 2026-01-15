@@ -1,0 +1,36 @@
+O( (N+K) log N)
+#가방이 어려개이고 보석을 하나만 가능하므로 그리디임을 생각해냄. 
+#하지만 가치가 큰 보석이 들어갈 수 있는 가방 중 가장 큰 가방에 들어가려고했으나 이는 오류(가방을 기준으로 해야한다고 함** 솔직히 처음 내 방식이 왜 틀렸는지 모르겠음)
+#보석 무게순, 가방의 크기 순으로 정렬해서 가방이 작은값부터 들어갈 수 있는 보석을 heap에넣고 그중 가치가 큰 보석을 그 가방에 넣는 방식.
+
+import sys
+input = sys.stdin.readline
+
+import heapq
+
+
+N,K = map(int,input().split())
+jewels = []
+bags = []
+for _ in range(N):
+    m,v = map(int,input().split())
+    jewels.append([m,v])
+    
+for _ in range(K):
+    C = int(input())
+    bags.append(C)
+
+bags.sort()
+jewels.sort()
+
+heap = []
+result = 0
+j = 0
+for bag in bags:
+    while j < N and jewels[j][0] <= bag:
+        heapq.heappush(heap,-jewels[j][1])
+        j+=1
+    if heap:
+        result += -heapq.heappop(heap)
+    
+print(result)
