@@ -1,0 +1,133 @@
+#O(N*N * 4^5)
+#방향에 따른 움직임 구현이 어려웠음. 비슷한 로직으로 시도했으나 실패
+#0이 아닌애들 모아서 원래 하려던거 하면 됨.(0일때 제거하고 하면 되는데 0일때 second+1로 하려고해서 이상해짐)
+#조합? 구하는건 이제 익숙해짐(! list(seq) 조심)
+#복사 하는 법: arr = [row[:] for row in originalarr]
+
+from itertools import combinations
+
+N = int(input())
+
+originalarr = [[0]* N for _ in range(N)]
+
+for i in range(N):
+    originalarr[i] = list(map(int,input().split()))
+    
+def copy():
+    arr = [row[:] for row in originalarr]
+    return arr
+
+def up(arr):
+    for c in range(N):
+        tmp = []
+        for r in range(N):
+            if arr[r][c] != 0:
+                tmp.append(arr[r][c])
+        merge = []
+        idx = 0
+        while idx < len(tmp):
+            if idx+1<len(tmp) and tmp[idx+1] == tmp[idx]:
+                merge.append(tmp[idx]*2)
+                idx +=2
+            else:
+                merge.append(tmp[idx])
+                idx +=1
+        for r in range(N):
+            arr[r][c] = merge[r] if r < len(merge) else 0
+            
+def down(arr):
+    for c in range(N):
+        tmp = []
+        for r in range(N-1, -1, -1):
+            if arr[r][c] != 0:
+                tmp.append(arr[r][c])
+
+        merge = []
+        idx = 0
+        while idx < len(tmp):
+            if idx + 1 < len(tmp) and tmp[idx] == tmp[idx + 1]:
+                merge.append(tmp[idx] * 2)
+                idx += 2
+            else:
+                merge.append(tmp[idx])
+                idx += 1
+
+        for r in range(N):
+            arr[N-1-r][c] = merge[r] if r < len(merge) else 0
+            
+def left(arr):
+    for r in range(N):
+        tmp = []
+        for c in range(N):
+            if arr[r][c] != 0:
+                tmp.append(arr[r][c])
+
+        merge = []
+        idx = 0
+        while idx < len(tmp):
+            if idx + 1 < len(tmp) and tmp[idx] == tmp[idx + 1]:
+                merge.append(tmp[idx] * 2)
+                idx += 2
+            else:
+                merge.append(tmp[idx])
+                idx += 1
+
+        for c in range(N):
+            arr[r][c] = merge[c] if c < len(merge) else 0
+            
+def right(arr):
+    for r in range(N):
+        tmp = []
+        for c in range(N-1, -1, -1):
+            if arr[r][c] != 0:
+                tmp.append(arr[r][c])
+
+        merge = []
+        idx = 0
+        while idx < len(tmp):
+            if idx + 1 < len(tmp) and tmp[idx] == tmp[idx + 1]:
+                merge.append(tmp[idx] * 2)
+                idx += 2
+            else:
+                merge.append(tmp[idx])
+                idx += 1
+
+        for c in range(N):
+            arr[r][N-1-c] = merge[c] if c < len(merge) else 0
+            
+lst = []
+seq = []
+
+def choose():
+    if len(seq) == 5:
+            lst.append(list(seq))
+            return 0
+    for i in range(4):
+        seq.append(i)
+        choose()
+        seq.pop()
+        
+choose()
+
+def move(n,arr):
+    if n == 0:
+        up(arr)
+    elif n== 1:
+        down(arr)
+    elif n== 2:
+        left(arr)
+    else:
+        right(arr)
+
+def solution():
+    result = 0
+    for i in range(len(lst)):
+        arr = copy()
+        for j in range(5):
+            move(lst[i][j],arr)
+        for j in range(N):
+            for k in range(N):
+                result = max(result,arr[j][k])
+    print(result)
+    
+solution()
