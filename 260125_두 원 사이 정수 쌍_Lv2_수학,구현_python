@@ -1,0 +1,25 @@
+#O(r2 + r1)
+#어렵진않았는데 원에 겹치는 점들을 예외로 치는거에서 실수했음.
+def ans(r):
+    res = 0
+    h = r
+    nt = 0
+    for i in range(1,r):
+        l = h*h + i*i
+        while l > r*r:
+            h -= 1
+            l = h*h + i*i 
+        if l == r*r:
+            nt +=1
+        res += h
+    return [res*4 + r*4 + 1, nt*4 + 4]
+
+
+def solution(r1, r2):
+    answer = 0
+
+    ans2 = ans(r2)
+    ans1 = ans(r1)
+    answer = ans2[0] - ans1[0] + ans1[1]
+    
+    return answer
