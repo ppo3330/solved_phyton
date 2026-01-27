@@ -1,0 +1,57 @@
+#O(N log N)
+#lis알고리즘과 이분탐색은 이제 익숙해짐
+#수열 자체를 구하는 과정에서 A_total을 쓰는 방법을 배움
+#갱신된 애들은 뒤에서 봤을때 cnt가 하나씩 작아지는 것임.
+#각 원소의 lis위치를 찾아놓고 뒤에서부터 cnt를 줄이면서 찾으면 됨.
+#뒤에서 부터 찾을 경우 해당값이 마지막으로 갱신됐고 그 값이 cnt랑 같을경우 해당값이 정답에 포함됨
+#cnt보다 작거나 큰 경우 이후에 다른값이 갱신되거나 해당값은 결과에 영향을 미치지 못하는 부분수열 이후의 값이 됨.
+
+
+N = int(input())
+A = list(map(int,input().split()))
+
+A_total = [[]*2 for _ in range(N)]
+lis = []
+result = []
+
+def lower(n):
+    left = 0
+    right = len(lis)-1
+    
+    while left < right:
+        mid = (left+right)//2
+        if n <= lis[mid]:
+            right = mid
+        else:
+            left = mid + 1
+    return left
+
+
+def func():
+    for i in range(len(A)):
+        n = A[i]
+        if i == 0:
+            lis.append(n)
+            A_total[0] = [n,0]
+            continue
+        if n > lis[len(lis) -1]:
+            lis.append(n)
+            A_total[i] = [n,len(lis)-1]
+        else:
+            idx = lower(n)
+            lis[idx] = n
+            A_total[i] = [n, idx]
+
+
+func()
+cnt = len(lis)-1
+for i in range(N-1,-1,-1):
+    if A_total[i][1] == cnt:
+        result.append(A_total[i][0])
+        cnt-=1
+    if cnt == -1:
+        break
+    
+result.reverse()
+print(len(result))
+print(*result)
