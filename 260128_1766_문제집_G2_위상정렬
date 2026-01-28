@@ -1,0 +1,35 @@
+#O((N + M)log N)
+#시간복잡도가 while문에서 N번+ cur에서 log N, 그 속 for문은 M번, heap에서 log N이지만 for문은 전체적으로 M번도는것 ->(N+M) log N
+
+import heapq
+import sys
+input = sys.stdin.readline
+
+
+N,M = map(int,input().split())
+
+arr = [i for i in range(N)]
+nxts = [[] for _ in range(N)]
+indegree = [0]*N
+
+h = []
+for i in range(M): 
+    a,b = map(int,input().split())
+    indegree[b-1] +=1
+    nxts[a-1].append(b-1)
+
+for i in range(N):
+    if indegree[i] == 0:
+        heapq.heappush(h,arr[i])
+
+        
+result = []
+while(h):
+    cur = heapq.heappop(h)
+    result.append(cur+1)
+    for i in nxts[cur]:
+        indegree[i] -= 1
+        if indegree[i] == 0:
+            heapq.heappush(h,i)
+            
+print(*result)
