@@ -1,0 +1,27 @@
+#O(logA + logB)
+#어렵다... 수학적인 부분 필요
+#2^n:100... , 2^n -1: 111... -> sum_f(2^n - 1) : 모든 비트들이 2^(n-1)개의 1이 존재함.
+#따라서 seung * (x//2) +1
+#애매한 수는 최대 비트를 하나 줄여가면서 재귀로 계산하는 방식.
+#기억해보기.
+
+import math
+import sys
+
+sys.setrecursionlimit(10 ** 8)
+
+A,B = map(int,input().split())
+
+def sum_f(x):
+    if x <= 0:
+        return 0
+    
+    seung = int(math.log2(x))
+    floor_2pow = 2 ** seung
+    if floor_2pow == x:
+        return seung * (x//2) +1
+    
+    diff = x - floor_2pow
+    return sum_f(floor_2pow) + diff + sum_f(diff)
+
+print(sum_f(B) - sum_f(A-1))
