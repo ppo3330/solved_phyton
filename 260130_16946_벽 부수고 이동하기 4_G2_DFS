@@ -1,0 +1,69 @@
+#O(N*M)
+#bfs로 만들었는데 q.pop(0)으로 하면 시간이 길어짐. dfs로해도 어차피 괜찮음 q.pop() 이것만으로 dfs가 됨. <- 논리자체는 거의 같음
+#bfs할때 
+#sys.stdout.write(''.join(map(str,resultarr[i])) + '\n') 기억하기 입출력 시간 줄이는 방법.
+#논리 자체는 쉽게 생각했음. 구현에 있어서 시간초과가 많이 나옴.
+
+import sys
+
+input = sys.stdin.readline
+N,M = map(int,input().split())
+
+arr = [[0]*M for _ in range(N)]
+resultarr = [[0]*M for _ in range(N)]
+
+for i in range(N):
+    n = input()
+    for j in range(M):
+        arr[i][j] = int(n[j])
+        resultarr[i][j] = int(n[j])
+        
+dx = [-1,0,0,1]
+dy = [0,-1,1,0]
+
+def dfs(cnt,x,y):
+    q = []
+    q.append([x,y])
+    arr[x][y] = cnt
+    
+    while q:
+        cur = q.pop()
+        curx = cur[0]
+        cury = cur[1]
+        section[cnt] +=1
+    
+        for d in range(4):
+            forx = curx + dx[d]
+            fory = cury + dy[d]
+            if forx <0 or forx >= N or fory <0 or fory >= M: continue
+            if arr[forx][fory] == 0:
+                arr[forx][fory] = cnt
+                q.append([forx,fory])
+            
+                
+cnt = 1
+section = [0]*2
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] == 0:
+            cnt+=1
+            section.append(0)
+            dfs(cnt,i,j)
+       
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] == 1:
+            s = []
+            for d in range(4):
+                forx = i + dx[d]
+                fory = j + dy[d]
+                if forx <0 or forx >= N or fory <0 or fory >= M: continue
+                if arr[forx][fory] > 1 and arr[forx][fory] not in s:
+                    s.append(arr[forx][fory])
+            for t in s:
+                resultarr[i][j] += section[t]
+            resultarr[i][j] %= 10
+                
+
+for i in range(N):
+    sys.stdout.write(''.join(map(str,resultarr[i])) + '\n')
