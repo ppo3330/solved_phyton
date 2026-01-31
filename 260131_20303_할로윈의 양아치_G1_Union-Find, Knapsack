@@ -1,0 +1,56 @@
+#O(N + GK) G: 그룹 수
+#union find로 그룹들을 찾고, knapsack으로 풀었음.
+#union find 정석과 knapsack 기억하기(가방을 역방향으로 돌기)
+#range(K,w-1,-1) 이번에는 K를 포함하면 안돼서 K-1이었음.
+
+import sys
+
+input = sys.stdin.readline
+
+N,M,K = map(int,input().split())
+child = list(map(int,input().split()))
+
+repres = [i for i in range(N+1)]
+
+def find_parent(x):
+    if repres[x] != x:
+        repres[x] = find_parent(repres[x])
+    
+    return repres[x]
+
+def union(a,b):
+    a = find_parent(a)
+    b = find_parent(b)
+    if a < b:
+        repres[b] = a
+    else:
+        repres[a] = b
+        
+for i in range(M):
+    a,b = map(int,input().split())
+    union(a,b)
+    
+relation = [[0,0] for _ in range(N)]
+
+for i in range(1,N+1):
+    root = find_parent(i)-1
+    relation[root][1] += child[i-1]
+    relation[root][0] +=1
+    
+items = []
+for i in range(N):
+    if relation[i][0] != 0:
+        items.append(relation[i]) 
+
+n = len(items)
+dp = [0]*(K)
+result = 0
+
+for i in range(n):
+    w = items[i][0]
+    v = items[i][1]
+    for j in range(K-1,w-1,-1):
+        dp[j] = max(dp[j],dp[j-w] + v)
+
+
+print(max(dp))
