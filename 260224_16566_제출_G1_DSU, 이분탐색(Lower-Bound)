@@ -1,0 +1,31 @@
+#O(NlogN + K(logN + α(N))
+#α(N)은 아커만 함수로 union find에서 압축까지 구현했을때 시간복잡도로 거의 상수임
+#N이 우주에 있는 원자 수 5이하임.
+#parent를 cards속 수로 했으나, 이렇게 한경우 중간 값들의 변경이 되지 않으므로 idx를 넘어간 카드를 가져오는 것이 안됨.
+#parent를 인덱스로 해결
+
+
+from bisect import bisect_right
+import sys
+
+input = sys.stdin.readline
+
+N,M,K = map(int,input().split())
+cards = list(map(int,input().split()))
+cards.sort()
+
+parent = [i for i in range(M+1)]
+
+Kcards = list(map(int,input().split()))
+
+def find(x):
+    if x != parent[x]:
+        parent[x] = find(parent[x])
+    return parent[x]
+
+for card in Kcards:
+    idx = bisect_right(cards,card)
+    idx = find(idx)
+    print(cards[idx])
+    
+    parent[idx] = find(idx+1)
