@@ -1,0 +1,51 @@
+#O(N! * M * N log N)
+#가능한 상태 수가 N!임, heappush heappop은 log(방문상태수)== log(N!) == NlogN
+#다익스트라를 이렇게 사용도 하는구나 싶음.
+#heapq, int(''.join(map(str, arr))), dic사용법 익숙해지기
+#다익스트라를 이용하여서 최소 비용으로 비오름차순이 되는 경우 찾기
+
+import sys
+import heapq
+
+input = sys.stdin.readline
+
+
+N = int(input())
+A = list(map(int,input().split()))
+M = int(input())
+funcs = []
+for i in range(M):
+    funcs.append(list(map(int,input().split())))
+    
+dic = {}
+def LstToInt(arr):
+    return int(''.join(map(str, arr)))
+
+answer = LstToInt(list(sorted(A)))
+result = -1
+dic[LstToInt(A)] = 0
+hq = []
+heapq.heappush(hq,(0,A))
+while hq:
+    cost, cur = heapq.heappop(hq)
+    if answer == LstToInt(cur):
+        result = cost
+        break
+
+    for l,r,v in funcs:
+        l-=1
+        r-=1
+        tmp = cur.copy()
+        new_cost = cost + v
+        tmp[l], tmp[r] = tmp[r], tmp[l]
+        tmpint = LstToInt(tmp)
+        if dic.get(tmpint) is None:
+            dic[tmpint] = new_cost
+            heapq.heappush(hq,(new_cost,tmp))
+            continue
+        if dic[tmpint] > new_cost:
+            dic[tmpint] = new_cost
+            heapq.heappush(hq,(new_cost,tmp))
+
+
+print(result)
