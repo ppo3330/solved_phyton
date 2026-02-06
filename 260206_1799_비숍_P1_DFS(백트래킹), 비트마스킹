@@ -1,0 +1,50 @@
+#O(2^50) 이론상으로는 이렇지만 대각선제약과 색 분리로 인해 실제로는 10^6 이하임
+#dfs를 통한 백트래킹.
+#대각선임을 확인하는 방법으로 비트 마스킹 사용, x+y가 짝수냐 홀수냐로 흑백칸 분리,
+#position을 idx로 돌며 돌을 안두는것, 돌을 둘 수 있다면 두는것을 dfs로 돌았음.
+#생각보다 구현자체는 어렵지 않았는데 아이디어가 너무 어려웠음.
+
+import sys
+
+input = sys.stdin.readline
+
+N = int(input())
+arr = [[] for _ in range(N)]
+
+for i in range(N):
+    arr[i] = list(map(int,input().split()))
+black = []
+white = []
+
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] == 1:
+           if (i+j) % 2 == 0:
+                black.append((i,j))
+           else:
+                white.append((i,j))
+
+def dfs(idx,cnt,diag1,diag2,position):
+    global best
+    if cnt + (len(position) - idx) <= best:
+        return
+    if idx == len(position):
+        best = max(best,cnt)
+        return 
+    x,y = position[idx]
+    d1 = x-y+N
+    d2 = x+y
+    
+    if not (diag1 & (1<<d1)) and not (diag2 & (1<<d2) ):
+        dfs(idx+1,cnt+1,diag1|(1<<(d1)), diag2|(1<<(d2)), position)
+    
+    dfs(idx+1,cnt,diag1,diag2,position)
+            
+best = 0
+dfs(0, 0, 0, 0, black)
+b1 = best
+
+best = 0
+dfs(0, 0, 0, 0, white)
+
+print(b1+best)
