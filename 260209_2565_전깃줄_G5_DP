@@ -1,0 +1,20 @@
+#O(N^2)
+#DP, 전깃줄 겹치는지 판명.
+
+N = int(input())
+lines = []
+
+for i in range(N):
+    line = list(map(int,input().split()))
+    lines.append(line)
+    
+lines.sort()
+print(lines)
+
+dp = [1]*(N)
+
+for i in range(1,N):
+    for j in range(i):
+        if lines[j][1] < lines[i][1]:
+            dp[i]  = max(dp[i],dp[j]+1)
+print(N - dp[N-1])
