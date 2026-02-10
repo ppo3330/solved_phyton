@@ -1,0 +1,52 @@
+#O(NlogN)
+#전깃줄 문제를 겹치는지 판명하거나 하는게 아님.
+#Lis알고리즘을 통해서 왼쪽은 정렬해놓고 오른쪽이 점점 커지게만 만들면 되는 것.
+#역추적시 total은 Lis기준이 아니라 A를 기준으로 만들어야함. total로 만들면 꼬임(필요한 전선을 삭제 시킬 수 있음)
+#lis알고리즘 기억하기.
+
+import sys
+from bisect import bisect_left
+
+input = sys.stdin.readline
+
+N = int(input())
+A = []
+for i in range(N):
+    wire = list(map(int,input().split()))
+    A.append(wire)
+    
+A.sort(key=lambda x:x[0])
+
+Lis = []
+A_total = [[]*2 for _ in range(N)]
+
+for i in range(N):
+    n = A[i]
+    if i == 0:
+        Lis.append(A[i][1])
+        A_total[0] = [n,0]
+        continue
+    if Lis[len(Lis)-1] < A[i][1]:
+        Lis.append(A[i][1])
+        A_total[i] = [n,len(Lis)-1]
+    else:
+        idx = bisect_left(Lis,A[i][1])
+        Lis[idx] = A[i][1]
+        A_total[i] = [n,idx]
+    
+
+cnt = len(Lis)-1
+result = []
+result_num = N - cnt -1
+for i in range(N-1,-1,-1):
+    if A_total[i][1] != cnt:
+        result.append(A_total[i][0][0])
+    else:
+        cnt-=1
+
+
+result.sort()
+
+print(result_num)
+for i in result:
+    print(i)
