@@ -1,0 +1,41 @@
+#O(N log N)
+
+#DFS를 통해서 값을 출력하고 공통되는 부분을 찾으며 내려감
+#idx의 범위를 실수하면서 에러가 났음
+
+#정석은 트리를 직접 구현하는 것임.
+
+
+
+import sys
+
+input = sys.stdin.readline
+
+N = int(input())
+fruits = []
+for i in range(N):
+    tmp = list(map(str,input().split()))
+    fruits.append(tmp[1:])
+    
+fruits.sort()
+
+
+def dfs(st, ed, n):
+    if st > ed: return
+    if len(fruits[st]) <= n:
+        return
+    
+    for i in range(n*2):
+        print("-",end="")
+    print(fruits[st][n])
+    
+    idx = st
+    while idx + 1 <= ed:
+        if len(fruits[idx+1]) <= n: break
+        if fruits[idx+1][n] != fruits[st][n]: break
+        idx += 1
+        
+    dfs(st,idx,n+1)
+    dfs(idx+1,ed,n)
+    
+dfs(0,N-1,0)
