@@ -1,0 +1,41 @@
+#O(n log n)
+
+#home < office가 되게 통일
+#office를 기준으로 정렬하고 가장 작은 값부터 루프
+#heap에 넣고 while문을 돌며 heap에 최상단값(home)이 L밖이 되면 heappop
+#while문을 다 돌면 그때 L을 기준으로 최대값(heap 크기)이 나옴
+
+#bisect_right를 이용해서 비슷한 형식을 생각했지만 정렬비용이 너무 컸음
+#정렬기준과 루프를 잘못된 방식으로 돌았음
+
+#이런 문제(스위핑)의 경우 뒤에(office)를 기준으로 두고 정렬한 후 작은 값부터 루프를 돌아아함
+
+
+import sys
+import heapq
+
+input = sys.stdin.readline
+
+n = int(input())
+people = []
+for _ in range(n):
+    a,b = map(int,input().split())
+    if(a>b):
+        a,b = b,a
+    people.append([a,b])
+    
+d = int(input())
+
+people.sort(key=lambda x: x[1])
+
+hq = []
+mx = 0
+
+for h,o in people:
+    heapq.heappush(hq,h)
+    
+    while hq and hq[0] < o-d:
+        heapq.heappop(hq)
+    mx = max(len(hq),mx)
+
+print(mx)
