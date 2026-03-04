@@ -1,0 +1,54 @@
+#O( N+ (M+K)log N)
+
+#세그먼트 트리 기본 + 곱
+#곱의 경우 중간에 변화가 아니라 endnode까지 내려가서부터 올라오는 형식이어야함
+
+N,M,K = map(int,input().split())
+
+MOD = 1000000007
+nums = [1]*N
+segtree = [1]*(4*N)
+
+def init(st,ed,node):
+    if st == ed:
+        segtree[node] = nums[st]
+        return segtree[node]
+    mid = (st+ed)//2
+    segtree[node] = init(st,mid,node*2)*init(mid+1,ed,node*2+1)% MOD
+    return segtree[node]
+
+def mul(st,ed,node,left,right):
+    if left > ed or right < st: return 1
+    if left <= st and right >= ed: return segtree[node]
+    mid = (st+ed)//2
+    segtree[node] = mul(st,mid,node*2,left,right)*mul(mid+1,ed,node*2+1,left,right)% MOD
+    return segtree[node]
+    
+def update(st,ed,node,idx,nxt):
+    if idx < st or idx > ed : return
+
+    if st == ed:
+        segtree[node] = nxt
+        return
+    mid = (st+ed)//2
+    update(st,mid,node*2,idx,nxt)
+    update(mid+1,ed,node*2+1,idx,nxt)
+    segtree[node] = segtree[node*2]*segtree[node*2+1]% MOD
+
+
+for i in range(N):
+    nums[i] = int(input())
+    
+init(0,N-1,1)
+print(segtree[:40])
+results = []
+for i in range(M+K):
+    a,b,c = map(int,input().split())
+    if a== 1:
+        update(0,N-1,1, b-1,c)
+        nums[b-1] = c
+    else:
+        results.append(mul(0,N-1,1,b-1,c-1)%MOD)
+        
+
+print(results)
