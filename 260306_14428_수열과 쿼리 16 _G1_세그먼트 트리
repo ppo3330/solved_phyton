@@ -1,0 +1,67 @@
+#O(N + M log N)
+
+#최솟값을 구하는 세그먼트 트리이데 인덱스를 추가로 기록해야함
+
+import sys
+
+input = sys.stdin.readline
+MAX = 1e11
+
+def init(st,ed,node):
+    if st == ed:
+        segtree[node] = [nums[st],st]
+        return segtree[node]
+    mid = (st+ed)//2
+    segtree[node] = init(st,mid,node*2)
+    tmp = init(mid+1,ed,node*2+1)
+    if(segtree[node][0] > tmp[0] or (segtree[node][0] == tmp[0] and segtree[node][1] > tmp[1])):
+        segtree[node] = tmp
+    return segtree[node]
+
+def cal(st,ed,node,left,right):
+    if left > ed or right < st: return [MAX,MAX]
+    if left <= st and right >= ed: return segtree[node]
+    mid = (st+ed)//2
+    res =  cal(st,mid,node*2,left,right)
+    tmp = cal(mid+1,ed,node*2+1,left,right)
+    if(res[0] > tmp[0] or (res[0] == tmp[0] and res[1] > tmp[1])):
+        res = tmp
+    return res
+
+    
+def update(st,ed,node,idx,nxt):
+    if idx < st or idx > ed : return
+
+    if st == ed:
+        segtree[node] = [nxt,idx]
+        return
+    mid = (st+ed)//2
+    update(st,mid,node*2,idx,nxt)
+    update(mid+1,ed,node*2+1,idx,nxt)
+    segtree[node] = segtree[node*2]
+    tmp = segtree[node*2+1]
+    if(segtree[node][0] > tmp[0] or (segtree[node][0] == tmp[0] and segtree[node][1] > tmp[1])):
+        segtree[node] = tmp
+
+
+N= int(input())
+
+nums = []
+segtree = [1]*(4*N)
+
+nums = list(map(int,input().split()))
+    
+init(0,N-1,1)
+results = []
+
+M = int(input())
+for i in range(M):
+    a,b,c = map(int,input().split())
+    if a == 1:
+        update(0,N-1,1, b-1,c)
+        nums[b-1] = c
+    else:
+        results.append(cal(0,N-1,1,b-1,c-1))
+        
+for i in results:
+    print(i[1]+1)
