@@ -1,0 +1,27 @@
+#O(N)
+
+#숫자를 입력 받을때 아예 문자열로 입력받은후, 루프
+#숫자가 맞으면 temp에 입력, 숫자가 아닌경우 템프 만큼 res에 더함, temp초기화   <- 숫자를 이렇게 입력받음
+#마지막엔 N까지 더한값을 res에서 빼면 중복된값 하나 남음
+
+#숫자를 입력받는 방법을 익혔음
+
+import sys
+
+input = sys.stdin.readline
+
+N = int(input())
+sumN = sum(range(1,N))
+numbers = input().rstrip()
+res = 0
+temp = ""
+for num in numbers:
+    if num.isdigit():
+        temp += num
+    else:
+        res += int(temp)
+        temp = ""
+        
+res += int(temp)
+
+print(res - sumN)
