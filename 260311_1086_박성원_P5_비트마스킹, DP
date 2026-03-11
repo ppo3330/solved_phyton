@@ -1,0 +1,51 @@
+#O(N * 2^N * K)
+
+#A,B를 이어 붙일 때 A*B의 길이 + B 로 붙인다는 생각
+#dp[mask][r] mask: 몇번째 수들이 들어갔는지 비트마스킹으로 입력, r: 그때 나머지 값.
+#mod[i] 10^i를 K로 나눈 나머지, tmp[i][r]: 나머지가 r일때 i번째 수를 붙인 값의 나머지
+
+import sys
+from math import gcd
+
+input = sys.stdin.readline
+
+N = int(input())    
+num = []
+for _ in range(N):
+    a = int(input())
+    num.append(a)
+K = int(input())
+
+mod = [0]*52
+l = [len(str(i)) for i in num]
+for i in range(1,51):
+    mod[i] = pow(10,i,K)    
+
+dp = [[0]*K for _ in range(1<<N)]
+dp[0][0] = 1
+
+tmp = [[0]*K for _ in range(N)]
+
+for i in range(N):
+    for r in range(K):
+        tmp[i][r] = (r*mod[l[i]] + num[i]%K)%K
+        
+for mask in range(1<<N):
+    for i in range(N):
+        next = mask | (1 << i)
+        if next == mask: continue
+        for r in range(K):
+            dp[next][tmp[i][r]] += dp[mask][r]
+                    
+son = dp[(1<<N)-1][0]
+mom = 1
+for i in range(1,N+1):
+    mom*=i
+g = gcd(son,mom)
+son//=g
+mom//=g
+print(son,end = "")
+print("/",end = "")
+print(mom)
+
+            
