@@ -1,0 +1,47 @@
+#O(T+P)
+
+#dpP를 만드는과정. 접두사와 접미사가 같은 정도를 통해 파악
+#이후 T를 루프를 돌며 P에서의 위치도 계산한다. 완전히 같으면 answer에 추가하고, dpP대로, 중간에 틀어지는경우, dpP를 이용하여 p_idx를 기억된곳까지만 복귀
+
+#KMP알고리즘 기억해보기
+#부르트포스로는 쉬운 문제이나 기억하는 방식이 쉽지 않았음.
+#다른곳에서는 pattern이라는 함수에 담는데 pattern함수에 담는 방식과 이용방식을 잘 기억해야할 듯 함.
+
+import sys
+
+input = sys.stdin.readline
+
+def solution():
+    T = input().rstrip()
+    P = input().rstrip()
+    tlen = len(T)
+    plen = len(P)
+
+    dpP = [0] * plen
+    j=0
+    for i in range(1,plen):
+        while(j>0 and P[i] != P[j]):
+            j = dpP[j-1]
+        if (P[i] == P[j]):
+            j += 1
+            dpP[i] = j
+            
+    answer = []
+    p_idx = 0
+    for t_idx in range(tlen):
+        while p_idx > 0 and T[t_idx] !=  P[p_idx]:
+            p_idx = dpP[p_idx-1]
+        if T[t_idx] == P[p_idx]:
+            if p_idx == plen-1:
+                answer.append(t_idx-plen+2)
+                p_idx = dpP[p_idx]
+            else:
+                p_idx+=1
+                
+    print(len(answer))
+    for a in answer:
+        print(a,end=" ")
+
+solution()
+
+    
