@@ -1,0 +1,21 @@
+#O(log N + log M)
+
+#가운데가 있을 때 소를 나두는 방식
+#처음에 영어라서 이해를 잘못했었음.
+
+import sys
+
+input = sys.stdin.readline
+
+N,M = map(int,input().split())
+cnt = 1
+res =0 
+    
+while N %2 == 1 and M %2 == 1 :
+    res += cnt
+    cnt *=4
+    N//=2
+    M//=2
+
+
+print(res)
