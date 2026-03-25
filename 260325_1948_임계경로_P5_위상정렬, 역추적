@@ -1,0 +1,62 @@
+#O(n*m)
+
+#위상정렬을 통해서 최장 거리를 찾아냄.
+#역추적을 통해서 루트를 찾음 (l[cur] == l[prev]+w를 통해서 역추적)
+
+#처음에 다익스트라로 풀었는데 실패
+#위상정렬 + 각 노드마다 루트들을 넣었더니 메모리초과
+#위상정렬 + 역추적 방식으로 바꿈.
+
+import sys
+from collections import deque
+
+input = sys.stdin.readline
+
+def solution():
+    n = int(input())
+    m = int(input())
+    graph = [[] for _ in range(n)]
+    reverse_graph = [[] for _ in range(n)]
+    indegree = [0]*n
+    l = [0]*n
+
+    for _ in range(m):
+        u,v,w = map(int,input().split())
+        graph[u-1].append([v-1,w])
+        reverse_graph[v-1].append([u-1,w])
+        indegree[v-1] += 1
+        
+    H,R = map(int,input().split())
+    H-=1
+    R-=1
+    
+    q = []
+    q.append(H)
+    while q:
+        cur = q.pop()
+        for nxt,nxtw in graph[cur]:
+            neww = nxtw + l[cur]
+            if neww > l[nxt]:
+                l[nxt] = neww
+            indegree[nxt] -=1
+            if indegree[nxt] == 0:
+                q.append(nxt)
+            
+    print(l[R])
+    
+    visited = [False]*n
+    q = []
+    q.append(R)
+    count = 0
+    visited[R] = True
+    while q:
+        cur = q.pop()
+        for prev, w in reverse_graph[cur]:
+            if l[prev] + w == l[cur]:
+                count += 1
+                if not visited[prev]:
+                    visited[prev] = True
+                    q.append(prev)
+    print(count)
+    
+solution()
