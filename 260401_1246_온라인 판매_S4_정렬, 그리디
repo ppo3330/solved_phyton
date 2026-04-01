@@ -1,0 +1,29 @@
+#O(m)
+
+#정렬 후, 루프돌며 파는 달걀 수를 그 이상의 사람수와 최대 달걀수중 작은 값으로
+#res가 큰 값인 경우 가격과 합 수정
+
+#최대 n명을 생각 못해서 오류가 났었음
+
+
+import sys
+
+input = sys.stdin.readline
+
+n,m = map(int,input().split())
+prices = []
+for _ in range(m):
+    a = int(input())
+    prices.append(a)
+prices.sort()
+
+ans = [0,0]
+for idx,i in enumerate(prices):
+    nums = min(n,(m-idx))
+    res = i * nums
+    
+    if ans[1] < res:
+        ans[0] = i
+        ans[1] = res
+    
+print(ans[0], ans[1])
